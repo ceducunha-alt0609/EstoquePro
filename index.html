@@ -2,9 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0f1923">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0f1923" id="metaThemeColor">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="EstoqueCP">
 <link rel="manifest" href="manifest.json">
@@ -21,9 +22,18 @@
   --mono:'DM Mono',monospace; --sans:'Syne',sans-serif; --body:'Inter',sans-serif;
   --r:12px; --rs:8px; --shadow:0 4px 24px rgba(0,0,0,.5);
 }
+[data-theme="light"] {
+  --bg:#f0f4f8; --surface:#ffffff; --surface2:#e8edf3; --surface3:#dde4ed;
+  --border:#d0dae6; --border2:#bfcad8;
+  --text:#0d1f30; --text2:#3d5a78; --text3:#7090b0;
+  --accent:#009977; --accent2:#0077dd; --accent3:#dd4400;
+  --warn:#b06000; --danger:#c0272a; --success:#1fa060; --purple:#7030d0;
+  --shadow:0 4px 24px rgba(0,0,0,.12);
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;overflow:hidden}
-#app{display:flex;flex-direction:column;height:100%}
+html{height:100%;height:-webkit-fill-available}
+body{min-height:100vh;min-height:-webkit-fill-available;background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;overflow:hidden;overscroll-behavior:none}
+#app{display:flex;flex-direction:column;height:100vh;height:-webkit-fill-available;}
 
 /* TOPBAR */
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10}
@@ -71,7 +81,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
 /* BOTTOM NAV */
-.bottom-nav{background:var(--surface);border-top:1px solid var(--border);display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
+.bottom-nav{background:var(--surface);border-top:1px solid var(--border);display:flex;flex-shrink:0;}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 8px;cursor:pointer;transition:all .2s;color:var(--text3);font-size:9px;font-family:var(--mono);letter-spacing:.3px;border:none;background:none;position:relative}
 .nav-item svg{width:20px;height:20px;transition:all .2s}
 .nav-item.active{color:var(--accent)}
@@ -227,7 +237,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
 
 /* FAB */
-.fab{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom));right:16px;width:52px;height:52px;border-radius:14px;background:var(--accent);color:#0a0f14;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 20px rgba(0,212,170,.4);transition:all .2s;z-index:50;font-weight:700}
+.fab{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom) + 12px);right:16px;width:52px;height:52px;border-radius:14px;background:var(--accent);color:#0a0f14;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 20px rgba(0,212,170,.4);transition:all .2s;z-index:50;font-weight:700}
 .fab:hover{transform:scale(1.05);box-shadow:0 6px 28px rgba(0,212,170,.5)}
 .fab:active{transform:scale(.96)}
 
@@ -294,7 +304,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .conf-qty.alert{color:var(--danger)}
 
 /* TOAST */
-.toast-wrap{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom));left:16px;right:16px;z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast-wrap{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom) + 8px);left:16px;right:16px;z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);animation:tIn .3s ease,tOut .3s ease 2.7s forwards;font-size:13px}
 @keyframes tIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes tOut{to{opacity:0;transform:translateY(10px)}}
@@ -333,6 +343,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
       <div class="tsub">CONDOMÍNIO · GESTÃO DE MATERIAIS</div>
     </div>
     <div class="tactions">
+      <button class="bicon" id="btnTheme" onclick="cycleTheme()" title="Alternar tema">
+        <span id="themeIcon">🌙</span>
+      </button>
       <button class="bicon" onclick="openSearch()" title="Buscar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </button>
@@ -651,7 +664,7 @@ const MONTHS_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','
 // ══════════════════════════════════════════
 let S = {
   items: [], movs: [],
-  settings: { threshWarn: 150, confFreq: 30, lastConf: null },
+  settings: { threshWarn: 150, confFreq: 30, lastConf: null, theme: 'dark' },
   confChecked: {},
   confFilter: 'all',
   catFilter: 'all',
@@ -1517,6 +1530,40 @@ document.getElementById('fabBtn').onclick=()=>{
 };
 
 // ══════════════════════════════════════════
+// THEME  (dark | light | auto)
+// ══════════════════════════════════════════
+const THEMES = ['dark','light','auto'];
+const THEME_ICONS = {dark:'🌙', light:'☀️', auto:'🌗'};
+const THEME_LABELS = {dark:'Escuro', light:'Claro', auto:'Automático'};
+
+function applyTheme(theme) {
+  const root = document.documentElement;
+  let effective = theme;
+  if (theme === 'auto') {
+    effective = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+  root.setAttribute('data-theme', effective);
+  const metaTheme = document.getElementById('metaThemeColor');
+  if (metaTheme) metaTheme.setAttribute('content', effective === 'light' ? '#f0f4f8' : '#0f1923');
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.textContent = THEME_ICONS[theme];
+}
+
+function cycleTheme() {
+  const idx = THEMES.indexOf(S.settings.theme || 'dark');
+  const next = THEMES[(idx + 1) % THEMES.length];
+  S.settings.theme = next;
+  save();
+  applyTheme(next);
+  toast(`Tema: ${THEME_LABELS[next]}`,'info');
+}
+
+// Listen for system theme changes (for auto mode)
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+  if (S.settings.theme === 'auto') applyTheme('auto');
+});
+
+// ══════════════════════════════════════════
 // PWA
 // ══════════════════════════════════════════
 if('serviceWorker' in navigator){
@@ -1540,6 +1587,7 @@ function toast(msg,type='ok'){
 // INIT
 // ══════════════════════════════════════════
 load();
+applyTheme(S.settings.theme || 'dark');
 renderDashboard();
 updateBanners();
 
